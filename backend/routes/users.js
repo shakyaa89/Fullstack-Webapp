@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const createUser = require("../controller/userController.js");
+const { createUser, loginUser } = require("../controller/userController.js");
 const User = require("../model/userModel.js");
 
 /* GET users listing. */
@@ -10,9 +10,8 @@ router.get("/", function (req, res, next) {
 
 /* GET users listing. */
 router.get("/user", async (req, res) => {
-  
   const userData = await User.find({});
-  
+
   res.status(200).json({
     message: "User Fetched Successfully!",
     user: userData,
@@ -20,5 +19,7 @@ router.get("/user", async (req, res) => {
 });
 
 router.post("/create", createUser);
+
+router.post("/login", loginUser);
 
 module.exports = router;

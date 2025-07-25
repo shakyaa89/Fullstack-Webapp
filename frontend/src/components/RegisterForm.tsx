@@ -16,7 +16,7 @@ function RegisterForm() {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // prevents default behaviour, stop page refresh on form submit
     const finalData = {
       name,
@@ -24,15 +24,21 @@ function RegisterForm() {
       password,
     };
 
-    console.log(finalData.name);
-    axios
-      .post("http://localhost:3000/users/create", finalData)
-      .then((response) => {
-        alert("User Registered Successfully!");
-      });
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/users/create",
+        finalData
+      );
+      alert("User Registered Successfully!");
+      setEmail("");
+      setName("");
+      setPassword("");
+    } catch (err: any) {
+      console.log(err);
+      alert(err?.response?.data?.message || "An error occurred");
+    }
   };
 
-  console.log(name, password, email);
   return (
     <>
       <h1>Register Form</h1>
