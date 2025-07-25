@@ -6,12 +6,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (email === "" || password === "") {
-      setError("All fields must be filled!");
-    }
 
     const loginData = {
       email,
@@ -19,9 +15,13 @@ const LoginForm = () => {
     };
 
     try {
-      axios.post("http://localhost:3000/users/login", loginData);
-    } catch (err) {
-      console.log(err);
+      const response = await axios.post(
+        "http://localhost:3000/users/login",
+        loginData
+      );
+      alert("Login Successful!");
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "An error occurred!");
     }
   };
 
