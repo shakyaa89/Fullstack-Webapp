@@ -1,0 +1,14 @@
+.active {
+  background-color: #3e5641;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: 0.3s ease;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #1a1a1a inset !important; /* bg-gray-900 */
+  -webkit-text-fill-color: #fff !important;
+  border-bottom: 1px solid white !important; /* force white border on autofill */
+  transition: background-color 5000s ease-in-out 0s;
+}
