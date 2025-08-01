@@ -20,7 +20,13 @@ const LoginForm = () => {
     };
 
     try {
-      await axios.post("http://localhost:3000/users/login", loginData);
+      await axios
+        .post("http://localhost:3000/users/login", loginData)
+        .then((response) => {
+          localStorage.setItem("accessToken", response.data.accessToken);
+        });
+
+      setError("");
       setShowSuccess(true);
 
       setTimeout(() => {

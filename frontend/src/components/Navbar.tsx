@@ -2,6 +2,13 @@ import { BookPlus, FileText, House, KeyRound, SearchCheck } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  const logoutHandler = () => {
+    localStorage.removeItem("accessToken");
+    alert("User logged out successfully!");
+  };
+  
   return (
     <nav className=" flex items-center justify-center">
       <div className="backdrop-blur-md shadow-[0_0_25px_rgba(0,0,0,0.4)] px-4 py-4 flex items-center justify-evenly w-full ">
@@ -29,12 +36,22 @@ const Navbar = () => {
             <BookPlus size={20} className="mr-1" />
             Register
           </NavLink>
-          <NavLink
-            to="/login"
-            className="inline-flex items-center hover:text-white text-lg text-md transition-all ease-in-out duration-300 px-[10px] py-[5px] rounded-md"
-          >
-            <KeyRound size={20} className="mr-1" /> Login
-          </NavLink>
+          {accessToken ? (
+            <button
+              onClick={logoutHandler}
+              className=" inline-flex items-center hover:text-white text-lg text-md transition-all ease-in-out duration-300 px-[10px] py-[5px] rounded-md"
+            >
+              <KeyRound size={20} className="mr-1" />
+              Logout
+            </button>
+          ) : (
+            <NavLink
+              to="/login"
+              className="inline-flex items-center hover:text-white text-lg text-md transition-all ease-in-out duration-300 px-[10px] py-[5px] rounded-md"
+            >
+              <KeyRound size={20} className="mr-1" /> Login
+            </NavLink>
+          )}
         </div>
       </div>
     </nav>

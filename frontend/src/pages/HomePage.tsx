@@ -1,8 +1,9 @@
+import AuthHomePage from "../components/HomePage/AuthHomePage";
 
 const HomePage = () => {
   return (
     <div>
-      <h1>Home Page</h1>
+      <AuthHomePage />
     </div>
   );
 };

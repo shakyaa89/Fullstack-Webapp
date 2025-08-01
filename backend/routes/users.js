@@ -1,7 +1,12 @@
 var express = require("express");
 var router = express.Router();
-const { createUser, loginUser } = require("../controller/userController.js");
+const {
+  createUser,
+  loginUser,
+  getUserListController,
+} = require("../controller/userController.js");
 const User = require("../model/userModel.js");
+const validateTokenMiddlware = require("../middleware/AuthMiddleware.js");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -21,5 +26,7 @@ router.get("/user", async (req, res) => {
 router.post("/create", createUser);
 
 router.post("/login", loginUser);
+
+router.get("/list", validateTokenMiddlware, getUserListController);
 
 module.exports = router;

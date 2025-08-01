@@ -5,16 +5,17 @@ const MyInformation = ({
   name,
   email,
 }: {
-  id: number;
+  id: string;
   name: string;
   email?: string;
 }) => {
   return (
-    <div>
+    <div className="text-white">
       <h1>My Information</h1>
       <p>ID : {id}</p>
       <p>Name : {name}</p>
       {email ? <p>Email : {email}</p> : null}
+      <br />
     </div>
   );
 };
