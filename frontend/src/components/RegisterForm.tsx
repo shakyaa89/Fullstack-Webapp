@@ -1,4 +1,5 @@
 import axios from "axios";
+import { UserRoundPlus } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -48,7 +49,9 @@ function RegisterForm() {
 
   return (
     <div className="flex flex-col items-center justify-center backdrop-blur-md shadow-[0_0_25px_rgba(0,0,0,0.4)] px-10 py-10 mt-20 text-[#F0F0F0] rounded-xl w-full max-w-md mx-auto">
-      <h1 className="text-3xl mb-7 font-bold">Register</h1>
+      <h1 className="mb-7">
+        <UserRoundPlus size={100} />
+      </h1>
       <p className="text-xl mb-10 font-semibold">Create an account</p>
       <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
         <input

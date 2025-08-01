@@ -2,9 +2,7 @@ const User = require("../model/userModel.js");
 const bcrypt = require("bcrypt");
 
 const createUser = async (req, res) => {
-  const name = req.body.name;
-  const email = req.body.email;
-  const password = req.body.password;
+  const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
     return res.status(400).json({ message: "All Fields are required!" });
@@ -55,7 +53,6 @@ const loginUser = async (req, res) => {
     message: "User Logged In Successfully!",
     user: user,
   });
-
 };
 
 module.exports = { createUser, loginUser };

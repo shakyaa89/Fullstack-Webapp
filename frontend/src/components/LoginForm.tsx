@@ -1,4 +1,5 @@
 import axios from "axios";
+import { CircleUserRound } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -32,7 +33,9 @@ const LoginForm = () => {
 
   return (
     <div className=" backdrop-blur-md shadow-[0_0_25px_rgba(0,0,0,0.4)] flex flex-col items-center justify-center px-10 py-10 mt-20 rounded-xl w-full max-w-md mx-auto text-[#F0F0F0]">
-      <h1 className="text-3xl mb-7 font-bold">Login</h1>
+      <h1 className="mb-7">
+        <CircleUserRound size={100} />
+      </h1>
       <p className="text-xl mb-10 font-semibold">Login to your account.</p>
       <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
         <input
