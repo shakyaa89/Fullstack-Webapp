@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import CreateQuestionSetPage from "./pages/QuestionSet/CreateQuestionSetPage";
 
 export interface IAuthContext {
   isAuth: boolean;
@@ -67,6 +68,10 @@ function App() {
           <Route path="/aboutus" element={<AboutUsPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/admin/questionset/create"
+            element={<CreateQuestionSetPage />}
+          />
         </Routes>
       </AuthContext.Provider>
     </>
