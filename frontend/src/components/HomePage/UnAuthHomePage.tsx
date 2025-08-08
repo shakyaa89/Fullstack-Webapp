@@ -1,11 +1,6 @@
-import React from 'react'
 
 const UnAuthHomePage = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div></div>;
+};
 
-export default UnAuthHomePage
+export default UnAuthHomePage;

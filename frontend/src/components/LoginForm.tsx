@@ -1,7 +1,8 @@
 import axios from "axios";
 import { CircleUserRound } from "lucide-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext, type IAuthContext } from "../App";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const { isAuth, setAuthState } = useContext<IAuthContext>(AuthContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +25,12 @@ const LoginForm = () => {
       await axios
         .post("http://localhost:3000/users/login", loginData)
         .then((response) => {
-          localStorage.setItem("accessToken", response.data.accessToken);
+          localStorage.setItem("accessToken", response?.data?.accessToken);
+
+          setAuthState((prev) => ({
+            ...prev,
+            isAuth: true,
+          }));
         });
 
       setError("");
