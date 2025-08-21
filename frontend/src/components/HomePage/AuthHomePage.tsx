@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import MyInformation from "../../MyInformation";
 
-export interface user {
+export interface User {
   _id: string;
   name: string;
   email: string;
@@ -12,45 +12,52 @@ export interface user {
 }
 
 const AuthHomePage = () => {
-  const [users, setUser] = useState<user[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     async function fetchData() {
-      axios
-        .get("http://localhost:3000/users/list", {
+      try {
+        const response = await axios.get("http://localhost:3000/users/list", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        })
-        .then((response) => {
-          const userList: user[] = response?.data?.user;
-          setUser(userList);
-        })
-        .catch((error) => {
-          console.log("error => ", error);
-          const errors = error?.response?.data?.message || "An error occurred";
-          alert(errors);
         });
+
+        const userList: User[] = response?.data?.user || [];
+        setUsers(userList);
+      } catch (error: any) {
+        console.error("error => ", error);
+        setError(error?.response?.data?.message || "An error occurred");
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchData();
-  }, []);
+  }, [accessToken]);
+
+  if (loading)
+    return <p className="text-white text-center">Loading users...</p>;
+  if (error) return <p className="text-red-400 text-center">{error}</p>;
 
   return (
-    <div>
-      {users.map((user) => {
-        return (
-          <>
-            <MyInformation
-              id={user?._id}
-              name={user?.name}
-              email={user?.email}
-            />
-          </>
-        );
-      })}
+    <div className="max-w-6xl mx-auto mt-8 flex flex-wrap gap-6 justify-center">
+      {users.length > 0 ? (
+        users.map((user) => (
+          <MyInformation
+            key={user._id}
+            id={user._id}
+            name={user.name}
+            email={user.email}
+          />
+        ))
+      ) : (
+        <p className="text-gray-300 w-full text-center">No users found.</p>
+      )}
     </div>
   );
 };

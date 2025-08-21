@@ -1,4 +1,4 @@
-import React from "react";
+import axios from "axios";
 import {
   FormProvider,
   useFieldArray,
@@ -8,12 +8,12 @@ import {
 
 interface QuestionSetForm {
   title: string;
-  question: {
+  questions: {
     questionText: string;
-    correctAnswer: string;
     choices: {
       label: string;
       text: string;
+      correctAnswer: boolean;
     }[];
   }[];
 }
@@ -21,42 +21,67 @@ interface QuestionSetForm {
 function CreateQuestionSetForm() {
   const defaultValues: QuestionSetForm = {
     title: "",
-    question: [
+    questions: [
       {
         questionText: "",
-        correctAnswer: "",
         choices: [],
       },
     ],
   };
 
-  const methods = useForm({ defaultValues });
-  const { watch, register } = methods;
+  const methods = useForm<QuestionSetForm>({ defaultValues });
+  const { watch, register, handleSubmit, reset } = methods;
 
   console.log("form values => ", watch());
 
+  const submitHandler = async (data: QuestionSetForm) => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await axios.post(
+        "http://localhost:3000/api/admin/questionset/create",
+        data,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+
+      console.log("response => ", response);
+      alert("Question set created successfully!");
+      reset(defaultValues); // clear form after submit
+    } catch (error) {
+      console.error("error => ", error);
+      alert("Failed to create question set!");
+    }
+  };
+
   return (
-    <div className="min-h-screen text-white p-6">
+    <div className="text-white p-6 max-w-3xl mx-auto">
       <FormProvider {...methods}>
-        <form className="max-w-3xl mx-auto space-y-8">
-          <div className="space-y-2">
-            <label htmlFor="title" className="block text-lg font-semibold">
+        <form
+          onSubmit={handleSubmit(submitHandler)}
+          className="space-y-6 border border-gray-600 rounded-xl p-6 shadow-[0_0_25px_rgba(0,0,0,0.4)] backdrop-blur-md"
+        >
+          {/* Title Input */}
+          <div>
+            <label htmlFor="title" className="block font-medium mb-2">
               Enter Title
             </label>
             <input
-              {...register("title")}
+              {...register("title", { required: true })}
               type="text"
               placeholder="Enter Title"
-              className="w-full px-4 py-2 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 rounded border border-gray-500 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
+          {/* Questions Component */}
           <CreateQuestions />
 
-          <div className="text-center">
+          {/* Submit */}
+          <div className="flex justify-end">
             <button
               type="submit"
-              className="mt-4 px-6 py-2 rounded-md border border-white hover:text-black hover:bg-white transition"
+              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white transition"
             >
               Submit
             </button>
@@ -71,43 +96,44 @@ function CreateQuestions() {
   const { register, control } = useFormContext<QuestionSetForm>();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "question",
+    name: "questions",
   });
 
-  function addQuestionHandler() {
-    append({
-      questionText: "",
-      correctAnswer: "",
-      choices: [],
-    });
-  }
+  const addQuestionHandler = () => {
+    append({ questionText: "", choices: [] });
+  };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <h2 className="text-xl font-semibold">Create Questions</h2>
 
       {fields.map((field, index) => (
         <div
           key={field.id}
-          className="p-4 border border-gray-500 rounded-md space-y-4"
+          className="p-4 border border-gray-600 rounded-lg space-y-3"
         >
+          {/* Question Text */}
           <div>
-            <label className="block mb-1">Question Text</label>
+            <label className="block font-medium mb-1">Question Text</label>
             <input
-              {...register(`question.${index}.questionText`)}
+              {...register(`questions.${index}.questionText`, {
+                required: true,
+              })}
               type="text"
               placeholder="Enter Question"
-              className="w-full px-4 py-2 rounded-md border border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 rounded border border-gray-500 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
+          {/* Choices */}
           <CreateChoices questionIndex={index} />
 
-          <div className="text-right">
+          {/* Remove Question */}
+          <div className="flex justify-end">
             <button
               type="button"
               onClick={() => remove(index)}
-              className="text-red-400 hover:text-red-500 text-sm"
+              className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-white text-sm"
             >
               Remove Question
             </button>
@@ -115,10 +141,11 @@ function CreateQuestions() {
         </div>
       ))}
 
+      {/* Add Question Button */}
       <button
         type="button"
         onClick={addQuestionHandler}
-        className="px-4 py-2 mt-2 rounded-md border border-white hover:bg-white hover:text-black transition"
+        className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded text-white"
       >
         Add Question
       </button>
@@ -130,48 +157,66 @@ function CreateChoices({ questionIndex }: { questionIndex: number }) {
   const { register, control } = useFormContext<QuestionSetForm>();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `question.${questionIndex}.choices`,
+    name: `questions.${questionIndex}.choices`,
   });
 
-  function addChoiceHandler() {
-    append({ label: "", text: "" });
-  }
+  const addChoiceHandler = () => {
+    append({
+      label: String.fromCharCode(65 + fields.length), // A, B, C ...
+      text: "",
+      correctAnswer: false,
+    });
+  };
 
   return (
-    <div className="space-y-2">
-      <h3 className="text-lg font-medium">Choices</h3>
+    <div className="space-y-3">
+      <h3 className="font-medium">Choices</h3>
 
       {fields.map((field, index) => (
         <div
           key={field.id}
-          className="flex flex-col sm:flex-row sm:items-center gap-2"
+          className="flex items-center gap-3 border border-gray-600 p-2 rounded"
         >
+          {/* Correct Answer Checkbox */}
           <input
-            {...register(`question.${questionIndex}.choices.${index}.label`)}
-            type="text"
-            placeholder="Label"
-            className="flex-1 px-3 py-2 rounded-md border border-gray-500 focus:outline-none"
+            {...register(
+              `questions.${questionIndex}.choices.${index}.correctAnswer`
+            )}
+            type="checkbox"
+            className="w-5 h-5 accent-blue-500"
           />
+
+          {/* Choice Label */}
+          <span className="text-gray-300 w-6 text-center font-semibold">
+            {String.fromCharCode(65 + index)}.
+          </span>
+
+          {/* Choice Text */}
           <input
-            {...register(`question.${questionIndex}.choices.${index}.text`)}
+            {...register(`questions.${questionIndex}.choices.${index}.text`, {
+              required: true,
+            })}
             type="text"
-            placeholder="Text"
-            className="flex-1 px-3 py-2 rounded-md border border-gray-500 focus:outline-none"
+            placeholder="Choice text"
+            className="flex-1 p-2 rounded border border-gray-500 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+
+          {/* Remove Choice */}
           <button
             type="button"
             onClick={() => remove(index)}
-            className="text-red-400 hover:text-red-500 text-sm"
+            className="px-2 py-1 bg-red-600 hover:bg-red-700 rounded text-white text-sm"
           >
             Remove
           </button>
         </div>
       ))}
 
+      {/* Add Choice Button */}
       <button
         type="button"
         onClick={addChoiceHandler}
-        className="mt-2 px-3 py-1 rounded-md border border-white hover:bg-white hover:text-black transition text-sm"
+        className="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-white text-sm"
       >
         Add Choice
       </button>

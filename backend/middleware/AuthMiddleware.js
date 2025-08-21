@@ -1,6 +1,6 @@
 const { verify } = require("jsonwebtoken");
 
-function validateTokenMiddlware(req, res, next) {
+function validateTokenMiddleware(req, res, next) {
   const rawAccessToken = req.headers.authorization;
 
   if (!rawAccessToken) {
@@ -23,4 +23,4 @@ function validateTokenMiddlware(req, res, next) {
   }
 }
 
-module.exports = validateTokenMiddlware;
+module.exports = validateTokenMiddleware;

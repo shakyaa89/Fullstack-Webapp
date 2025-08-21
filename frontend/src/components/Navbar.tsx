@@ -36,15 +36,24 @@ const Navbar = () => {
           </NavLink>
 
           {isAuth ? (
-            <button
-              onClick={logoutHandler}
-              className=" inline-flex items-center hover:text-white text-lg text-md transition-all ease-in-out duration-300 px-[10px] py-[5px] rounded-md cursor-pointer"
-            >
-              <KeyRound size={20} className="mr-1" />
-              Logout
-            </button>
+            <>
+              <NavLink
+                to="/questionset/list"
+                className=" inline-flex items-center hover:text-white text-lg text-md transition-all ease-in-out duration-300 px-[10px] py-[5px] rounded-md"
+              >
+                <BookPlus size={20} className="mr-1" />
+                Questions
+              </NavLink>
+              <button
+                onClick={logoutHandler}
+                className=" inline-flex items-center hover:text-white text-lg text-md transition-all ease-in-out duration-300 px-[10px] py-[5px] rounded-md cursor-pointer"
+              >
+                <KeyRound size={20} className="mr-1" />
+                Logout
+              </button>
+            </>
           ) : (
-            <span>
+            <>
               <NavLink
                 to="/register"
                 className=" inline-flex items-center hover:text-white text-lg text-md transition-all ease-in-out duration-300 px-[10px] py-[5px] rounded-md"
@@ -58,7 +67,7 @@ const Navbar = () => {
               >
                 <KeyRound size={20} className="mr-1" /> Login
               </NavLink>
-            </span>
+            </>
           )}
         </div>
       </div>

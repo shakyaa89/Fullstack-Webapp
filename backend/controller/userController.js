@@ -1,6 +1,7 @@
 const User = require("../model/userModel.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Profile = require("../model/ProfileModel");
 
 const createUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -24,6 +25,18 @@ const createUser = async (req, res) => {
 
   const user = new User(userData);
   await user.save();
+
+  const profileData = {
+    user: user?._id,
+    bio: "",
+    profilePicture: "",
+    skills: [],
+    github: "",
+    linkedin: "",
+    portfolioUrl: "",
+  };
+  const profile = new Profile(profileData);
+  await profile.save();
 
   res.status(201).json({
     message: "User Created Successfully!",
@@ -73,4 +86,21 @@ const getUserListController = async (req, res) => {
   });
 };
 
-module.exports = { createUser, loginUser, getUserListController };
+async function updateProfileMeController(req, res) {}
+
+async function viewMyProfileController(req, res) {
+  const { id } = req.user;
+}
+
+async function viewProfileofUserController(req, res) {
+  const { id } = req.params;
+}
+
+module.exports = {
+  createUser,
+  loginUser,
+  getUserListController,
+  updateProfileMeController,
+  viewMyProfileController,
+  viewProfileofUserController,
+};

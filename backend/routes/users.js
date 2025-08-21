@@ -4,29 +4,34 @@ const {
   createUser,
   loginUser,
   getUserListController,
+  updateProfileMeController,
+  viewMyProfileController,
+  viewProfileofUserController,
 } = require("../controller/userController.js");
 const User = require("../model/userModel.js");
-const validateTokenMiddlware = require("../middleware/AuthMiddleware.js");
-
-/* GET users listing. */
-router.get("/", function (req, res, next) {
-  res.send("Nodemon and Expressjs in JavaScript Runtime Environment");
-});
-
-/* GET users listing. */
-router.get("/user", async (req, res) => {
-  const userData = await User.find({});
-
-  res.status(200).json({
-    message: "User Fetched Successfully!",
-    user: userData,
-  });
-});
+const validateTokenMiddleware = require("../middleware/AuthMiddleware.js");
+const { uploadMiddleware } = require("../middleware/FileHandleMiddleware.js");
 
 router.post("/create", createUser);
 
 router.post("/login", loginUser);
 
-router.get("/list", validateTokenMiddlware, getUserListController);
+router.get("/list", validateTokenMiddleware, getUserListController);
+
+router.put(
+  "/profile",
+  validateTokenMiddleware,
+  uploadMiddleware.single("profileImg"),
+  updateProfileMeController
+);
+
+router.get("/profile/me", validateTokenMiddleware, viewMyProfileController);
+
+router.get(
+  "/profile/:id",
+  validateTokenMiddleware,
+
+  viewProfileofUserController
+);
 
 module.exports = router;

@@ -1,28 +1,42 @@
-const mongoose = require("mongoose");
+const { mongoose } = require("mongoose");
 
-const questionSchema = mongoose.Schema({
-  option: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Option",
+const questionSetSchema = new mongoose.Schema({
+  title: {
+    type: String,
     required: true,
   },
-  questionText: { type: String, required: true },
-  choices: [
+  questions: [
     {
-      label: { type: String }, // "A", "B", "C", etc.
-      text: { type: String }, // "React is a framework", etc.
+      questionText: {
+        type: String,
+        required: true,
+      },
+
+      choices: [
+        {
+          label: {
+            type: String,
+            required: true,
+          },
+          text: {
+            type: String,
+            required: true,
+          },
+          correctAnswer: {
+            type: Boolean,
+            default: false,
+          },
+        },
+      ],
     },
   ],
-  correctAnswer: {
-    type: String, // match the label ("A", "B", etc.)
-    required: true,
-  },
+
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User ",
+    ref: "User",
+    required: true,
   },
 });
 
-const Question = mongoose.model("Question", questionSchema);
-
+const Question = mongoose.model("Question", questionSetSchema);
 module.exports = Question;
