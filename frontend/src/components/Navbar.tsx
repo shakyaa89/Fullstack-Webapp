@@ -1,10 +1,18 @@
-import { BookPlus, FileText, House, KeyRound, SearchCheck } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import {
+  BookPlus,
+  FileText,
+  House,
+  KeyRound,
+  SearchCheck,
+  User,
+} from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext, type IAuthContext } from "../App";
 import { useContext } from "react";
 
 const Navbar = () => {
   const { isAuth, setAuthState } = useContext<IAuthContext>(AuthContext);
+  const navigate = useNavigate();
 
   const logoutHandler = () => {
     localStorage.removeItem("accessToken");
@@ -28,7 +36,7 @@ const Navbar = () => {
             <House size={20} className="mr-1" /> Home
           </NavLink>
           <NavLink
-            to="/aboutus"
+            to="/about"
             className="inline-flex items-center hover:text-white text-lg text-md transition-all ease-in-out duration-300 px-[10px] py-[5px] rounded-md"
           >
             <FileText size={20} className="mr-1" />
@@ -44,8 +52,18 @@ const Navbar = () => {
                 <BookPlus size={20} className="mr-1" />
                 Questions
               </NavLink>
+              <NavLink
+                to="/profile"
+                className=" inline-flex items-center hover:text-white text-lg text-md transition-all ease-in-out duration-300 px-[10px] py-[5px] rounded-md"
+              >
+                <User size={20} className="mr-1" />
+                Profile
+              </NavLink>
               <button
-                onClick={logoutHandler}
+                onClick={() => {
+                  logoutHandler();
+                  navigate("/");
+                }}
                 className=" inline-flex items-center hover:text-white text-lg text-md transition-all ease-in-out duration-300 px-[10px] py-[5px] rounded-md cursor-pointer"
               >
                 <KeyRound size={20} className="mr-1" />

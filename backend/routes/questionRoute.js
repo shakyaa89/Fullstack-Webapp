@@ -8,14 +8,7 @@ const {
 } = require("../controller/questionController");
 const validateTokenMiddleware = require("../middleware/AuthMiddleware");
 
-// Debug: check imported functions
-console.log({
-  listQuestionSetController,
-  getQuestionSetController,
-  saveAttemptedQuestionController,
-});
 
-// Routes
 router.get("/set/list", validateTokenMiddleware, listQuestionSetController);
 router.get("/set/:id", validateTokenMiddleware, getQuestionSetController);
 router.post(

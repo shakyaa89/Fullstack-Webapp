@@ -30,14 +30,12 @@ function CreateQuestionSetForm() {
   };
 
   const methods = useForm<QuestionSetForm>({ defaultValues });
-  const { watch, register, handleSubmit, reset } = methods;
-
-  console.log("form values => ", watch());
+  const { register, handleSubmit, reset } = methods;
 
   const submitHandler = async (data: QuestionSetForm) => {
     try {
       const accessToken = localStorage.getItem("accessToken");
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3000/api/admin/questionset/create",
         data,
         {
@@ -45,9 +43,8 @@ function CreateQuestionSetForm() {
         }
       );
 
-      console.log("response => ", response);
       alert("Question set created successfully!");
-      reset(defaultValues); // clear form after submit
+      reset(defaultValues); 
     } catch (error) {
       console.error("error => ", error);
       alert("Failed to create question set!");
@@ -61,7 +58,6 @@ function CreateQuestionSetForm() {
           onSubmit={handleSubmit(submitHandler)}
           className="space-y-6 border border-gray-600 rounded-xl p-6 shadow-[0_0_25px_rgba(0,0,0,0.4)] backdrop-blur-md"
         >
-          {/* Title Input */}
           <div>
             <label htmlFor="title" className="block font-medium mb-2">
               Enter Title
@@ -74,10 +70,8 @@ function CreateQuestionSetForm() {
             />
           </div>
 
-          {/* Questions Component */}
           <CreateQuestions />
 
-          {/* Submit */}
           <div className="flex justify-end">
             <button
               type="submit"
@@ -112,7 +106,6 @@ function CreateQuestions() {
           key={field.id}
           className="p-4 border border-gray-600 rounded-lg space-y-3"
         >
-          {/* Question Text */}
           <div>
             <label className="block font-medium mb-1">Question Text</label>
             <input
@@ -125,10 +118,8 @@ function CreateQuestions() {
             />
           </div>
 
-          {/* Choices */}
           <CreateChoices questionIndex={index} />
 
-          {/* Remove Question */}
           <div className="flex justify-end">
             <button
               type="button"
@@ -141,7 +132,6 @@ function CreateQuestions() {
         </div>
       ))}
 
-      {/* Add Question Button */}
       <button
         type="button"
         onClick={addQuestionHandler}
@@ -162,7 +152,7 @@ function CreateChoices({ questionIndex }: { questionIndex: number }) {
 
   const addChoiceHandler = () => {
     append({
-      label: String.fromCharCode(65 + fields.length), // A, B, C ...
+      label: String.fromCharCode(65 + fields.length), 
       text: "",
       correctAnswer: false,
     });
@@ -177,7 +167,6 @@ function CreateChoices({ questionIndex }: { questionIndex: number }) {
           key={field.id}
           className="flex items-center gap-3 border border-gray-600 p-2 rounded"
         >
-          {/* Correct Answer Checkbox */}
           <input
             {...register(
               `questions.${questionIndex}.choices.${index}.correctAnswer`
@@ -186,12 +175,10 @@ function CreateChoices({ questionIndex }: { questionIndex: number }) {
             className="w-5 h-5 accent-blue-500"
           />
 
-          {/* Choice Label */}
           <span className="text-gray-300 w-6 text-center font-semibold">
             {String.fromCharCode(65 + index)}.
           </span>
 
-          {/* Choice Text */}
           <input
             {...register(`questions.${questionIndex}.choices.${index}.text`, {
               required: true,
@@ -201,7 +188,6 @@ function CreateChoices({ questionIndex }: { questionIndex: number }) {
             className="flex-1 p-2 rounded border border-gray-500 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
-          {/* Remove Choice */}
           <button
             type="button"
             onClick={() => remove(index)}
@@ -212,7 +198,6 @@ function CreateChoices({ questionIndex }: { questionIndex: number }) {
         </div>
       ))}
 
-      {/* Add Choice Button */}
       <button
         type="button"
         onClick={addChoiceHandler}

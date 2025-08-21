@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import MyInformation from "../../MyInformation";
+import MyInformation from "../MyInformation";
 
 export interface User {
   _id: string;
@@ -45,19 +45,24 @@ const AuthHomePage = () => {
   if (error) return <p className="text-red-400 text-center">{error}</p>;
 
   return (
-    <div className="max-w-6xl mx-auto mt-8 flex flex-wrap gap-6 justify-center">
-      {users.length > 0 ? (
-        users.map((user) => (
-          <MyInformation
-            key={user._id}
-            id={user._id}
-            name={user.name}
-            email={user.email}
-          />
-        ))
-      ) : (
-        <p className="text-gray-300 w-full text-center">No users found.</p>
-      )}
+    <div className="max-w-6xl mx-auto mt-8 flex flex-wrap gap-2 justify-center">
+      <div>
+        <h1 className="text-2xl font-bold text-white ">Users List</h1>
+      </div>
+      <div className="max-w-6xl mx-auto mt-8 flex flex-wrap gap-6 justify-center">
+        {users.length > 0 ? (
+          users.map((user) => (
+            <MyInformation
+              key={user._id}
+              id={user._id}
+              name={user.name}
+              email={user.email}
+            />
+          ))
+        ) : (
+          <p className="text-gray-300 w-full text-center">No users found.</p>
+        )}
+      </div>
     </div>
   );
 };

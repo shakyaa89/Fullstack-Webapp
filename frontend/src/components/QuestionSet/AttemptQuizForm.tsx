@@ -27,7 +27,7 @@ function AttemptQuizForm({
 
   const defaultValues: IAttemptQuestionForm = { ...questionSet };
   const methods = useForm({ defaultValues });
-  const { watch, register, handleSubmit } = methods;
+  const { register, handleSubmit } = methods;
 
   const onSubmitHandler = (data: IAttemptQuestionForm) => {
     const accessToken = localStorage.getItem("accessToken");
@@ -49,7 +49,7 @@ function AttemptQuizForm({
       .then((res) => {
         setResult(res.data.data);
       })
-      .catch((err) => {});
+      .catch(() => {});
   };
 
   if (result) {

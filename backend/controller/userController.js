@@ -1,7 +1,7 @@
 const User = require("../model/userModel.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const Profile = require("../model/ProfileModel");
+const Profile = require("../model/profileModel");
 
 const createUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -86,14 +86,70 @@ const getUserListController = async (req, res) => {
   });
 };
 
-async function updateProfileMeController(req, res) {}
+async function updateProfileMeController(req, res) {
+  try {
+    const { id } = req.user;
+    const updateData = req.body;
+
+    if (req.file) {
+      updateData.profilePicture = req.file.filename;
+    }
+
+    const updatedProfile = await Profile.findOneAndUpdate(
+      { user: id },
+      updateData,
+      { new: true, upsert: true }
+    );
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      profile: updatedProfile,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
 async function viewMyProfileController(req, res) {
-  const { id } = req.user;
+  try {
+    const { id } = req.user;
+    const profile = await Profile.findOne({ user: id }).populate(
+      "user",
+      "name email"
+    );
+
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile fetched successfully",
+      profile: profile,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 }
 
 async function viewProfileofUserController(req, res) {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
+    const profile = await Profile.findOne({ user: id }).populate(
+      "user",
+      "name email"
+    );
+
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile fetched successfully",
+      profile: profile,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 }
 
 module.exports = {

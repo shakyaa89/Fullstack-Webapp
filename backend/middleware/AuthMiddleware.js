@@ -13,13 +13,12 @@ function validateTokenMiddleware(req, res, next) {
     return res.status(401).json({ message: "User is not authenticated! 2" });
   }
 
-  const verifyToken = verify(accessToken, "Hello123!");
-
-  if (verifyToken) {
+  try {
+    const verifyToken = verify(accessToken, "Hello123!");
     req.user = verifyToken;
     next();
-  } else {
-    return res.status(401).json({ message: "User is not authenticated!" });
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid or expired token!" });
   }
 }
 

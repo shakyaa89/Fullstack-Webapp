@@ -3,7 +3,7 @@ const { mongoose } = require("mongoose");
 const AnswerSchema = new mongoose.Schema({
   questionSet: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "QuestionSet",
+    ref: "Question",
     required: true,
   },
   user: {
@@ -25,8 +25,8 @@ const AnswerSchema = new mongoose.Schema({
       ],
     },
   ],
-  score: { type: Number, default: 0 }, // Number of correct answers
-  total: { type: Number, default: 0 }, // Total questions in this attempt
+  score: { type: Number, default: 0 }, 
+  total: { type: Number, default: 0 }, 
   submittedAt: {
     type: Date,
     default: Date.now,

@@ -11,7 +11,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
-  const { isAuth, setAuthState } = useContext<IAuthContext>(AuthContext);
+  const { setAuthState } = useContext<IAuthContext>(AuthContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,9 +36,7 @@ const LoginForm = () => {
       setError("");
       setShowSuccess(true);
 
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+      navigate("/");
     } catch (err: any) {
       setError(err?.response?.data?.message || "An error occurred!");
     }
@@ -87,7 +85,7 @@ const LoginForm = () => {
 
         <button
           type="submit"
-          className="mt-2w-full bg-[#3E5641] hover:bg-cyan-900 text-white px-4 py-2 rounded-md shadow-md transition cursor-pointer"
+          className="mt-2 w-full bg-[#3E5641] hover:bg-cyan-900 text-white px-4 py-2 rounded-md shadow-md transition cursor-pointer"
         >
           Login
         </button>

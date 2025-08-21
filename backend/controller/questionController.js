@@ -1,7 +1,6 @@
 const Answer = require("../model/answerModel");
 const Question = require("../model/questionModel");
 
-// List all question sets (only title and question count)
 async function listQuestionSetController(req, res) {
   try {
     const questionSet = await Question.aggregate([
@@ -19,7 +18,6 @@ async function listQuestionSetController(req, res) {
   }
 }
 
-// Get a single question set by ID
 async function getQuestionSetController(req, res) {
   try {
     const { id } = req.params;
@@ -37,7 +35,6 @@ async function getQuestionSetController(req, res) {
   }
 }
 
-// Save attempted answers and calculate score
 async function saveAttemptedQuestionController(req, res) {
   try {
     const { questionSet: questionSetId, responses } = req.body;
@@ -107,7 +104,6 @@ async function saveAttemptedQuestionController(req, res) {
   }
 }
 
-// Export all controllers
 module.exports = {
   listQuestionSetController,
   getQuestionSetController,

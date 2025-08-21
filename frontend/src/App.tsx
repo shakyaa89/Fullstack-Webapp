@@ -40,8 +40,6 @@ function App() {
   });
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  console.log("state => ", authState);
-
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
@@ -55,7 +53,7 @@ function App() {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        .then((response) => {
+        .then(() => {
           const { role }: JWTDecode = jwtDecode(accessToken as string);
 
           setAuthState((prev) => ({
@@ -65,7 +63,7 @@ function App() {
           }));
           setIsLoading(false);
         })
-        .catch((error) => {
+        .catch(() => {
           localStorage.clear();
           setIsLoading(false);
         });
@@ -86,17 +84,14 @@ function App() {
       >
         <Navbar />
         <Routes>
-          {/* normal */}
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutUsPage />} />
-          {/* unauth routes */}
           {!authState?.isAuth && (
             <>
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/login" element={<LoginPage />} />
             </>
           )}
-          {/* auth routes */}
           {authState?.isAuth && (
             <>
               <Route path="/profile" element={<ProfilePage />} />
@@ -111,7 +106,6 @@ function App() {
               />
             </>
           )}
-          {/* admin routes */}
           {authState?.roleState === "Admin" && (
             <>
               <Route
@@ -139,7 +133,7 @@ function App() {
                 </a>
               </div>
             }
-          />{" "}
+          />
         </Routes>
       </AuthContext.Provider>
     </>

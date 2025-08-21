@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AttemptQuizForm from "../../components/QuestionSet/AttemptQuizForm";
 
@@ -31,7 +31,6 @@ function AttemptQuizPage() {
     null
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const Navigate = useNavigate();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -51,7 +50,7 @@ function AttemptQuizPage() {
           setQuestionSet(response?.data);
           setIsLoading(false);
         })
-        .catch((error) => {
+        .catch(() => {
           setIsLoading(false);
         });
     }
