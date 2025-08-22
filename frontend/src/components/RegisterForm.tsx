@@ -30,10 +30,7 @@ function RegisterForm() {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/users/create",
-        finalData
-      );
+      await axios.post("http://localhost:3000/users/create", finalData);
       setEmail("");
       setName("");
       setPassword("");
