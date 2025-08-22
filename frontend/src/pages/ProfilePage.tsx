@@ -47,7 +47,6 @@ function ProfilePage() {
   const methods = useForm({ defaultValues });
   const { watch, reset, register, handleSubmit } = methods;
 
-  // Fetch profile data from backend
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -70,7 +69,6 @@ function ProfilePage() {
         const data = response.data.profile;
         setProfileData(data);
 
-        // Update form with fetched data
         reset({
           name: data.user?.name || "",
           email: data.user?.email || "",
@@ -98,7 +96,6 @@ function ProfilePage() {
 
   const handleCancel = () => {
     setIsEditing(false);
-    // Reset form to original data
     if (profileData) {
       reset({
         name: profileData.user?.name || "",
@@ -185,7 +182,7 @@ function ProfilePage() {
         {!isEditing && (
           <button
             onClick={handleEdit}
-            className="px-4 py-2 bg-[#3E5641] hover:bg-cyan-900 text-white rounded-md transition flex items-center"
+            className="px-4 py-2 bg-[#3E5641] hover:bg-[#2d3f30] text-white rounded-md transition flex items-center"
           >
             <Edit3 size={16} className="mr-2" />
             Edit
@@ -200,7 +197,6 @@ function ProfilePage() {
       )}
 
       {!isEditing ? (
-        // View Mode
         <div className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="flex items-center space-x-3 p-3 bg-white/10 rounded-lg">
@@ -281,7 +277,6 @@ function ProfilePage() {
           )}
         </div>
       ) : (
-        // Edit Mode
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
@@ -378,7 +373,7 @@ function ProfilePage() {
             <button
               type="submit"
               disabled={isUpdating}
-              className="px-6 py-2 bg-[#3E5641] hover:bg-cyan-900 text-white rounded-md transition flex items-center disabled:opacity-50"
+              className="px-6 py-2 bg-[#3E5641] hover:bg-[#2d3f30] text-white rounded-md transition flex items-center disabled:opacity-50"
             >
               <Save size={16} className="mr-2" />
               {isUpdating ? "Updating..." : "Save Changes"}

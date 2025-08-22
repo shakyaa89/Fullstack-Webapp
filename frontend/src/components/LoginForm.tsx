@@ -2,7 +2,8 @@ import axios from "axios";
 import { CircleUserRound } from "lucide-react";
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext, type IAuthContext } from "../App";
+import { AuthContext, type IAuthContext, type JWTDecode } from "../App";
+import { jwtDecode } from "jwt-decode";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -27,9 +28,14 @@ const LoginForm = () => {
         .then((response) => {
           localStorage.setItem("accessToken", response?.data?.accessToken);
 
+          const { role }: JWTDecode = jwtDecode(
+            response?.data?.accessToken as string
+          );
+
           setAuthState((prev) => ({
             ...prev,
             isAuth: true,
+            roleState: role,
           }));
         });
 
@@ -85,7 +91,7 @@ const LoginForm = () => {
 
         <button
           type="submit"
-          className="mt-2 w-full bg-[#3E5641] hover:bg-cyan-900 text-white px-4 py-2 rounded-md shadow-md transition cursor-pointer"
+          className="mt-2 w-full bg-[#3E5641] hover:bg-[#2d3f30] text-white px-4 py-2 rounded-md shadow-md transition cursor-pointer"
         >
           Login
         </button>

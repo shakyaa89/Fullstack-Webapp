@@ -1,67 +1,76 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import MyInformation from "../MyInformation";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext, type IAuthContext } from "../../App";
+import { Link } from "react-router-dom";
 
-export interface User {
-  _id: string;
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-  __v: number;
+interface ProfileData {
+  user: {
+    name: string;
+    email: string;
+  };
+  bio: string;
+  skills: Array<{
+    name: string;
+    level: string;
+  }>;
+  github: string;
+  linkedin: string;
+  portfolioUrl: string;
+  profilePicture: string;
 }
 
 const AuthHomePage = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const accessToken = localStorage.getItem("accessToken");
+  const [userProfile, setUserProfile] = useState<ProfileData | null>(null);
+  const { roleState } = useContext<IAuthContext>(AuthContext);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get("http://localhost:3000/users/list", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+    const accessToken = localStorage.getItem("accessToken");
 
-        const userList: User[] = response?.data?.user || [];
-        setUsers(userList);
+    async function fetchUser() {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/users/profile/me",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const data = response?.data?.profile;
+        setUserProfile(data);
       } catch (error: any) {
-        console.error("error => ", error);
-        setError(error?.response?.data?.message || "An error occurred");
-      } finally {
-        setLoading(false);
+        alert(error?.response?.data?.message || "Failed to fetch profile");
       }
     }
 
-    fetchData();
-  }, [accessToken]);
-
-  if (loading)
-    return <p className="text-white text-center">Loading users...</p>;
-  if (error) return <p className="text-red-400 text-center">{error}</p>;
+    fetchUser();
+  }, []);
 
   return (
-    <div className="max-w-6xl mx-auto mt-8 flex flex-wrap gap-2 justify-center">
-      <div>
-        <h1 className="text-2xl font-bold text-white ">Users List</h1>
-      </div>
-      <div className="max-w-6xl mx-auto mt-8 flex flex-wrap gap-6 justify-center">
-        {users.length > 0 ? (
-          users.map((user) => (
-            <MyInformation
-              key={user._id}
-              id={user._id}
-              name={user.name}
-              email={user.email}
-            />
-          ))
-        ) : (
-          <p className="text-gray-300 w-full text-center">No users found.</p>
-        )}
+    <div className="flex flex-col items-center justify-center p-6 mt-20">
+      <div className=" text-white p-8 rounded-2xl shadow-lg w-full max-w-md text-center">
+        <h1 className="text-2xl font-bold mb-4">Welcome Back</h1>
+
+        <p className="text-lg font-semibold">{userProfile?.user.name}</p>
+        <p className="text-gray-400">{userProfile?.user.email}</p>
+        <span className="inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded-full mt-3">
+          {roleState}
+        </span>
+
+        <div className="flex justify-center mt-5 gap-4">
+          <Link
+            to="/questionset/list"
+            className="bg-[#3E5641] text-white px-4 py-2 rounded-lg hover:bg-[#2d3f30] transition"
+          >
+            View Questions
+          </Link>
+          <Link
+            to="/profile"
+            className="bg-[#3E5641] text-white px-4 py-2 rounded-lg hover:bg-[#2d3f30] transition"
+          >
+            View Profile
+          </Link>
+        </div>
       </div>
     </div>
   );

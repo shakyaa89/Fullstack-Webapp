@@ -16,7 +16,7 @@ const UnAuthHomePage = () => {
       <div className="flex gap-4">
         <Link
           to="/login"
-          className="bg-[#3E5641] hover:bg-cyan-900 text-white px-5 py-3 rounded-md transition cursor-pointer"
+          className="bg-[#3E5641] hover:bg-[#2d3f30] text-white px-5 py-3 rounded-md transition cursor-pointer"
         >
           Login
         </Link>

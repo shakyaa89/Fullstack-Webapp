@@ -44,7 +44,7 @@ function CreateQuestionSetForm() {
       );
 
       alert("Question set created successfully!");
-      reset(defaultValues); 
+      reset(defaultValues);
     } catch (error) {
       console.error("error => ", error);
       alert("Failed to create question set!");
@@ -66,7 +66,7 @@ function CreateQuestionSetForm() {
               {...register("title", { required: true })}
               type="text"
               placeholder="Enter Title"
-              className="w-full p-2 rounded border border-gray-500 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 rounded border border-gray-500 bg-transparent focus:outline-none focus:ring-2 focus:ring-[#3E5641]"
             />
           </div>
 
@@ -75,7 +75,7 @@ function CreateQuestionSetForm() {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white transition"
+              className="px-6 py-2 bg-[#3E5641] hover:bg-[#2d3f30] rounded-lg text-white transition"
             >
               Submit
             </button>
@@ -114,7 +114,7 @@ function CreateQuestions() {
               })}
               type="text"
               placeholder="Enter Question"
-              className="w-full p-2 rounded border border-gray-500 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 rounded border border-gray-500 bg-transparent focus:outline-none focus:ring-2 focus:ring-[#3E5641]"
             />
           </div>
 
@@ -124,7 +124,7 @@ function CreateQuestions() {
             <button
               type="button"
               onClick={() => remove(index)}
-              className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-white text-sm"
+              className="px-3 py-1 bg-[#3E5641] hover:bg-[#2d3f30] rounded text-white text-sm"
             >
               Remove Question
             </button>
@@ -135,7 +135,7 @@ function CreateQuestions() {
       <button
         type="button"
         onClick={addQuestionHandler}
-        className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded text-white"
+        className="px-4 py-2 bg-[#3E5641] hover:bg-[#2d3f30] rounded text-white"
       >
         Add Question
       </button>
@@ -152,7 +152,7 @@ function CreateChoices({ questionIndex }: { questionIndex: number }) {
 
   const addChoiceHandler = () => {
     append({
-      label: String.fromCharCode(65 + fields.length), 
+      label: String.fromCharCode(65 + fields.length),
       text: "",
       correctAnswer: false,
     });
@@ -172,7 +172,7 @@ function CreateChoices({ questionIndex }: { questionIndex: number }) {
               `questions.${questionIndex}.choices.${index}.correctAnswer`
             )}
             type="checkbox"
-            className="w-5 h-5 accent-blue-500"
+            className="w-5 h-5 accent-[#3E5641]"
           />
 
           <span className="text-gray-300 w-6 text-center font-semibold">
@@ -185,13 +185,13 @@ function CreateChoices({ questionIndex }: { questionIndex: number }) {
             })}
             type="text"
             placeholder="Choice text"
-            className="flex-1 p-2 rounded border border-gray-500 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 p-2 rounded border border-gray-500 bg-transparent focus:outline-none focus:ring-2 focus:ring-[#3E5641]"
           />
 
           <button
             type="button"
             onClick={() => remove(index)}
-            className="px-2 py-1 bg-red-600 hover:bg-red-700 rounded text-white text-sm"
+            className="px-2 py-1 bg-[#3E5641] hover:bg-[#2d3f30] rounded text-white text-sm"
           >
             Remove
           </button>
@@ -201,7 +201,7 @@ function CreateChoices({ questionIndex }: { questionIndex: number }) {
       <button
         type="button"
         onClick={addChoiceHandler}
-        className="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-white text-sm"
+        className="px-3 py-1 bg-[#3E5641] hover:bg-[#2d3f30] rounded text-white text-sm"
       >
         Add Choice
       </button>

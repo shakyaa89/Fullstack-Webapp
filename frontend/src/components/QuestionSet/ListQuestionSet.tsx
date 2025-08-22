@@ -62,7 +62,7 @@ function ListQuestionSet() {
           return (
             <div
               key={question._id}
-              className="bg-white/10 backdrop-blur-md shadow-lg rounded-lg p-6 flex flex-col justify-between hover:bg-white/20 transition-all"
+              className="bg-white/10 backdrop-blur-md shadow-lg rounded-lg p-6 flex flex-col justify-between transition-all"
             >
               <div>
                 <h3 className="text-lg font-semibold text-white mb-2">
@@ -74,7 +74,7 @@ function ListQuestionSet() {
               </div>
               <button
                 onClick={takeQuizHandler}
-                className="mt-4 bg-[#3E5641] hover:bg-cyan-900 text-white px-4 py-2 rounded-md shadow-md transition text-center cursor-pointer"
+                className="mt-4 bg-[#3E5641] hover:bg-[#2d3f30] text-white px-4 py-2 rounded-md shadow-md transition text-center cursor-pointer"
               >
                 Take Quiz
               </button>

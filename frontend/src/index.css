@@ -3,3 +3,8 @@
 * {
   font-family: "Outfit", sans-serif;
 }
+
+::selection {
+  background-color: #3e5641;
+  color: white;
+}

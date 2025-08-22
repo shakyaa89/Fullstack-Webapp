@@ -12,6 +12,7 @@ import { jwtDecode } from "jwt-decode";
 import ListQuestionSetPage from "./pages/QuestionSet/ListQuestionSetPage";
 import AttemptQuizPage from "./pages/QuestionSet/AttemptQuizPage";
 import ProfilePage from "./pages/ProfilePage";
+import UserListPage from "./pages/UserListPage";
 
 export interface IAuthState {
   isAuth: boolean;
@@ -112,6 +113,7 @@ function App() {
                 path="/admin/questionset/create"
                 element={<CreateQuestionSetPage />}
               />
+              <Route path="/admin/user/list" element={<UserListPage />} />
             </>
           )}
           <Route
